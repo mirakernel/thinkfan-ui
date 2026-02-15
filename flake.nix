@@ -39,7 +39,7 @@
           categories = [ "System" "Utility" ];
         };
 
-        iconFiles = pkgs.runCommandNoCC "thinkfan-ui-icons" {} ''
+        iconFiles = pkgs.runCommand "thinkfan-ui-icons" {} ''
           mkdir -p $out/share/icons/hicolor/scalable/apps
           cp ${./linux_packaging/thinkfan-ui.svg} $out/share/icons/hicolor/scalable/apps/thinkfan-ui.svg
         '';
