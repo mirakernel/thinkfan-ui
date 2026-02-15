@@ -46,6 +46,35 @@ The flake provides runtime dependencies used by the app:
 - `polkit` (`pkexec`)
 - `xdg-utils` (`xdg-open`)
 
+#### NixOS note (`thinkpad_acpi`)
+
+On NixOS, you still need to enable ThinkPad fan control in the kernel module.
+Add this to your NixOS configuration:
+
+```nix
+{
+  boot.kernelModules = [ "thinkpad_acpi" ];
+  boot.extraModprobeConfig = ''
+    options thinkpad_acpi fan_control=1
+  '';
+}
+```
+
+Then run:
+
+```bash
+sudo nixos-rebuild switch
+sudo reboot
+```
+
+After reboot, verify:
+
+```bash
+cat /proc/acpi/ibm/fan
+```
+
+If `/proc/acpi/ibm/fan` is missing, your kernel/model may not support manual fan control via `thinkpad_acpi`.
+
 ## Install
 
 ### Arch / Manjaro
