@@ -20,11 +20,15 @@
           runtimeInputs = [
             pythonEnv
             pkgs.lm_sensors
-            pkgs.polkit
             pkgs.xdg-utils
             pkgs.coreutils
           ];
           text = ''
+            # On NixOS, pkexec must come from wrappers to keep setuid.
+            if [ -x /run/wrappers/bin/pkexec ]; then
+              export PATH="/run/wrappers/bin:$PATH"
+            fi
+
             exec python ${./src}/main.py "$@"
           '';
         };
