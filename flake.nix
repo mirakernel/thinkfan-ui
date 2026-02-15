@@ -25,7 +25,7 @@
             pkgs.coreutils
           ];
           text = ''
-            exec python ${./src/main.py} "$@"
+            exec python ${./src}/main.py "$@"
           '';
         };
 
