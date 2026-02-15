@@ -27,6 +27,25 @@ It is written for **Linux only**. For Windows, see [speedfan](http://www.almico.
 ### Fedora
 `sudo dnf install lm_sensors polkit python3 python3-pyqt6`
 
+### Nix (flakes)
+```bash
+# Run directly
+nix run .#
+
+# Install into user profile (desktop entry + icon included)
+nix profile install .#
+
+# Development shell
+nix develop
+python src/main.py
+```
+
+The flake provides runtime dependencies used by the app:
+- `python3` + `PyQt6`
+- `lm_sensors` (`sensors` command)
+- `polkit` (`pkexec`)
+- `xdg-utils` (`xdg-open`)
+
 ## Install
 
 ### Arch / Manjaro
