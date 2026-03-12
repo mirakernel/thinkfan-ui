@@ -19,7 +19,10 @@
           name = "thinkfan-ui";
           runtimeInputs = [
             pythonEnv
+            pkgs.qt6.qtbase
+            pkgs.qt6.qtwayland
             pkgs.lm_sensors
+            pkgs.polkit
             pkgs.xdg-utils
             pkgs.coreutils
           ];
@@ -28,6 +31,10 @@
             if [ -x /run/wrappers/bin/pkexec ]; then
               export PATH="/run/wrappers/bin:$PATH"
             fi
+
+            # Ensure Qt platform plugins are visible when launching from profile/desktop.
+            export QT_PLUGIN_PATH="${pkgs.qt6.qtbase}/lib/qt-6/plugins:${pythonEnv}/${pkgs.python3.sitePackages}/PyQt6/Qt6/plugins''${QT_PLUGIN_PATH:+:$QT_PLUGIN_PATH}"
+            export QT_QPA_PLATFORM="wayland;xcb"
 
             exec python ${./src}/main.py "$@"
           '';
@@ -66,10 +73,16 @@
         devShells.default = pkgs.mkShell {
           packages = [
             pythonEnv
+            pkgs.qt6.qtbase
+            pkgs.qt6.qtwayland
             pkgs.lm_sensors
             pkgs.polkit
             pkgs.xdg-utils
           ];
+          shellHook = ''
+            export QT_PLUGIN_PATH="${pkgs.qt6.qtbase}/lib/qt-6/plugins:${pythonEnv}/${pkgs.python3.sitePackages}/PyQt6/Qt6/plugins''${QT_PLUGIN_PATH:+:$QT_PLUGIN_PATH}"
+            export QT_QPA_PLATFORM="wayland;xcb"
+          '';
         };
       });
 }
